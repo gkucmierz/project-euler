@@ -103,24 +103,36 @@ const best = new Array(H*W).fill(Infinity);
 
 const countRow = row => {
   const queue = [[row, W-1, 0]];
-  
-  let cnt = 0;
+  const getVal = (h, w) => {
+    if (h < 0 || h >= H) return null;
+    if (w < 0 || w >= W) return null;
+    return matrix[h][w];
+  };
+
+  // let cnt = 0;
   const iter = (h, w, path = 0) => {
-    if (cnt++ % 1e5 === 0) console.log(cnt-1, queue.length);
+    // if (cnt++ % 1e5 === 0) console.log(cnt-1, queue.length);
     if (h < 0 || h >= H) return;
     if (w < 0 || w >= W) return;
     path += matrix[h][w];
     const idx = getIdx(h, w);
     if (best[idx] <= path) return;
     best[idx] = path;
-    [
+    ([
       [-1, 0],
       [ 1, 0],
       [ 0,-1],
       [ 0, 1],
-    ].map(([hd, wd]) => queue.push([h + hd, w + wd, path]));
+    ]).map(([hd, wd]) => [h + hd, w + wd])
+      .map(([hs, ws]) => {
+        const val = getVal(hs, ws);
+        return { hs, ws, val };
+      })
+      .filter(({val}) => val !== null)
+      .sort((a, b) => a.val - b.val)
+      .map(obj => queue.push([obj.hs, obj.ws, path]));
   };
-  
+
   do {
     const args = queue.shift();
     if (!args) break;
@@ -141,4 +153,6 @@ for (let i = 0; i < H; ++i) {
   if (val < min) min = val;
 }
 
-console.log(min);
+console.log(min); // 260324
+
+
