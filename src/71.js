@@ -1,4 +1,6 @@
 
+// https://projecteuler.net/problem=71
+
 const MAX = 1e6;
 
 const limit = 3 / 7;

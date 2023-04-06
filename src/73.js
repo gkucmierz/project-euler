@@ -1,4 +1,6 @@
 
+// https://projecteuler.net/problem=73
+
 const MAX = 12e3;
 
 const min = 1/3;
